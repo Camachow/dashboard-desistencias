@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd
 from requests.auth import HTTPBasicAuth
 import requests
+from utils.functions import *
+
 
 #Variaveis Globais
 API_KEY = 'Rm9ybUFwaUZlaXRhUGVsb0plYW5QaWVycmVQYXJhYURlc2Vudm9sdmU='
@@ -13,9 +15,34 @@ IDS = {'ITABIRA': '5b91aec2-e7ae-45e8-8146-bb7e5c40a8b6',
 #Requisição
 url  = 'http://api-hml.pdcloud.dev/' 
 headers = {'api-key': API_KEY}
+endpoint = f"enrolled/city/{IDS['BOM DESPACHO']}"
+req = requests.get(url+endpoint, headers=headers)
+alunosBomDespacho = req.json()
+
+#Requisição
 endpoint = f"enrolled/city/{IDS['ITABIRA']}"
 req = requests.get(url+endpoint, headers=headers)
-res = req.json()
-print(res)
+alunosItabira = req.json()
 
-st.title('Dados do Processo Seletivo')
+#Requisição
+endpoint = f"enrolled/city/{IDS['PEQUI']}"
+req = requests.get(url+endpoint, headers=headers)
+alunosPequi = req.json()
+
+print(contar_usuarios_com_atributo(alunosBomDespacho, 'status', 'Ativo'))
+
+st.title('Dados do Banco de Dados do PD')
+
+st.write('## Cidades')
+
+col1, col2, col3 = st.columns(3)
+with col1:
+    mostrar_dados_cidade('Bom Despacho', alunosBomDespacho)
+
+with col2:
+    mostrar_dados_cidade('Itabira', alunosItabira)
+
+with col3:
+    mostrar_dados_cidade('Pequi', alunosPequi)
+
+
