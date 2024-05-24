@@ -1,9 +1,11 @@
 import streamlit as st
-import pandas as pd
-from requests.auth import HTTPBasicAuth
+import os
+from dotenv import load_dotenv
 import requests
 from utils.functions import *
 from utils.globals import *
+
+API_KEY = os.getenv('API_KEY')
 
 #Requisição Enrolled BD
 url  = 'http://api-hml.pdcloud.dev/' 

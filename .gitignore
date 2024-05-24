@@ -1,0 +1,36 @@
+# Ignorar diretórios e arquivos específicos do Python
+*.pyc
+__pycache__/
+*.pyo
+.Python
+env/
+venv/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+.pytest_cache/
+.mypy_cache/
+
+# Ignorar arquivos de banco de dados SQLite
+*.sqlite3
+
+# Ignorar arquivos de cobertura de testes
+htmlcov/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+
+# Ignorar arquivos Jupyter Notebook
+*.ipynb_checkpoints
+
+# Ignorar arquivos de logs
+*.log
+
+#Ignorar dotenv
+.env
