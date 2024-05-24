@@ -5,6 +5,8 @@ import requests
 from utils.functions import *
 from utils.globals import *
 
+load_dotenv()
+
 API_KEY = os.getenv('API_KEY')
 
 #Requisição Enrolled BD
