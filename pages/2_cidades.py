@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 from utils.functions import *
 
 st.set_page_config(
@@ -65,9 +67,9 @@ with col1:
     fig = px.pie(alunos, names='status')
     st.plotly_chart(fig)
 
-with col2:
-    fig = px.histogram(alunos, x='status')
-    st.plotly_chart(fig)
+# with col2:
+#     fig = px.histogram(alunos, x='status')
+#     st.plotly_chart(fig)
 
 
 st.write('---')
@@ -75,11 +77,20 @@ st.write('---')
 st.write('## Processo Seletivo x Aprovados')
 
 st.write('### Gênero')
-col1, col2 = st.columns(2)
+
+
+col1, col2 = st.columns([3, 1])
 with col1:
-    fig = px.histogram(inscricoes, x='genero')
-    fig.update_layout(title='Inscrições por Gênero')
-    st.plotly_chart(fig)
+    fig_hist = make_subplots(rows=2, cols=2)
+    fig_hist.append_trace(go.Histogram( y=inscricoes['genero'],histnorm='percent', name='Inscritos', 
+                                        xbins=dict(size=0.3), marker_color='#EB89B5', opacity=0.75), 1,1)
+    fig_hist.append_trace(go.Histogram( y=inscricoes[inscricoes['absent'] == False]['genero'], histnorm='percent', name='Compareceram',
+                                        xbins=dict(size=0.3), marker_color='#330C73', opacity=0.75), 1, 2 )
+    fig_hist.append_trace(go.Histogram( y=inscricoesAprovados['genero'],histnorm='percent', name='Aprovados', 
+                                        xbins=dict(size=0.3), marker_color='#17becf', opacity=0.75), 2, 1)
+                                   
+    # fig.update_layout(title='Inscrições por Gênero')
+    st.plotly_chart(fig_hist)
 with col2:
     fig = px.histogram(inscricoesAprovados, x='genero')
     fig.update_layout(title='Inscrições Aprovadas por Gênero')
