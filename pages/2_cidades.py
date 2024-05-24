@@ -67,57 +67,123 @@ with col1:
     fig = px.pie(alunos, names='status')
     st.plotly_chart(fig)
 
-# with col2:
-#     fig = px.histogram(alunos, x='status')
-#     st.plotly_chart(fig)
-
-
 st.write('---')
 
 st.write('## Processo Seletivo x Aprovados')
 
 st.write('### Gênero')
 
+# Remover valores None da coluna "genero"
+filtered_genero = [g for g in inscricoes["genero"].unique() if g is not None]
 
-col1, col2 = st.columns([3, 1])
-with col1:
-    fig_hist = make_subplots(rows=2, cols=2)
-    fig_hist.append_trace(go.Histogram( y=inscricoes['genero'],histnorm='percent', name='Inscritos', 
-                                        xbins=dict(size=0.3), marker_color='#EB89B5', opacity=0.75), 1,1)
-    fig_hist.append_trace(go.Histogram( y=inscricoes[inscricoes['absent'] == False]['genero'], histnorm='percent', name='Compareceram',
-                                        xbins=dict(size=0.3), marker_color='#330C73', opacity=0.75), 1, 2 )
-    fig_hist.append_trace(go.Histogram( y=inscricoesAprovados['genero'],histnorm='percent', name='Aprovados', 
-                                        xbins=dict(size=0.3), marker_color='#17becf', opacity=0.75), 2, 1)
-                                   
-    # fig.update_layout(title='Inscrições por Gênero')
-    st.plotly_chart(fig_hist)
-with col2:
-    fig = px.histogram(inscricoesAprovados, x='genero')
-    fig.update_layout(title='Inscrições Aprovadas por Gênero')
-    st.plotly_chart(fig)
+fig_hist = make_subplots(rows=2, cols=2, horizontal_spacing=0.2)
+#Inscrições
+fig_hist.append_trace(go.Histogram( 
+    y=inscricoes['genero'],
+    histnorm='percent',
+    name='Inscritos', 
+    xbins=dict(size=0.3),
+    marker_color='#E800E7',
+    opacity=0.75
+), 1,1)
+#Compareceram
+fig_hist.append_trace(go.Histogram(
+    y=inscricoes[inscricoes['absent'] == False]['genero'],
+    histnorm='percent',
+    name='Compareceram',
+    xbins=dict(size=0.3),
+    marker_color='#0094FF',
+    opacity=0.75
+), 1, 2 )
+#Aprovados
+fig_hist.append_trace(go.Histogram(
+    y=inscricoesAprovados['genero'],
+    histnorm='percent',
+    name='Aprovados', 
+    xbins=dict(size=0.3),
+    marker_color='#FE8C00',
+    opacity=0.75
+), 2, 1)
+#Atualização aplicada a todos os subplots
+fig_hist.update_xaxes(showgrid=True, ticks="outside", range=[0, None])
+st.plotly_chart(fig_hist)
 
 st.write('### Idade')
-col1, col2 = st.columns(2)
-with col1:
-    fig = px.histogram(inscricoes, x='faixa_etaria', category_orders={"faixa_etaria": ["15-18", "19-25", "26-35", "36+"]})
-    fig.update_layout(title='Inscrições por Faixa Etária')
-    st.plotly_chart(fig)
+fig_hist = make_subplots(rows=2, cols=2, horizontal_spacing=0.2)
 
-with col2:
-    fig = px.histogram(inscricoesAprovados, x='faixa_etaria', category_orders={"faixa_etaria": ["15-18", "19-25", "26-35", "36+"]})
-    fig.update_layout(title='Inscrições Aprovadas por Faixa Etária')
-    st.plotly_chart(fig)
+# Remover valores None da coluna "faixa_etaria"
+#filtered_faixa_etaria = [g for g in inscricoes["faixa_etaria"].unique() if g is not None]
+# Definindo a ordem das categorias no eixo y
+#categoria_ordem = sorted(inscricoes["faixa_etaria"].unique())
+
+#Inscrições
+fig_hist.append_trace(go.Histogram( 
+    y=inscricoes['faixa_etaria'],
+    histnorm='percent',
+    name='Inscritos', 
+    xbins=dict(size=0.3),
+    marker_color='#E800E7',
+    opacity=0.75
+), 1,1)
+#Compareceram
+fig_hist.append_trace(go.Histogram(
+    y=inscricoes[inscricoes['absent'] == False]['faixa_etaria'],
+    histnorm='percent',
+    name='Compareceram',
+    xbins=dict(size=0.3),
+    marker_color='#0094FF',
+    opacity=0.75
+), 1, 2 )
+#Aprovados
+fig_hist.append_trace(go.Histogram(
+    y=inscricoesAprovados['faixa_etaria'],
+    histnorm='percent',
+    name='Aprovados', 
+    xbins=dict(size=0.3),
+    marker_color='#FE8C00',
+    opacity=0.75
+), 2, 1)
+#Atualização aplicada a todos os subplots
+fig_hist.update_yaxes(categoryorder='array', categoryarray=["15-18","19-25","26-35","36+"])
+fig_hist.update_xaxes(showgrid=True, ticks="outside", range=[0, None])
+st.plotly_chart(fig_hist)
+
 
 st.write('### Renda Familiar')
-col1, col2 = st.columns(2)
-with col1:
-    fig = px.histogram(inscricoes, x='rendaFamiliar')
-    fig.update_layout(title='Inscrições por Renda Familiar')
-    st.plotly_chart(fig)
-with col2:
-    fig = px.histogram(inscricoesAprovados, x='rendaFamiliar')
-    fig.update_layout(title='Inscrições Aprovadas por Renda Familiar')
-    st.plotly_chart(fig)
+fig_hist = make_subplots(rows=2, cols=2, horizontal_spacing=0.2)
+
+#Inscrições
+fig_hist.append_trace(go.Histogram( 
+    y=inscricoes['rendaFamiliar'],
+    histnorm='percent',
+    name='Inscritos', 
+    xbins=dict(size=0.3),
+    marker_color='#E800E7',
+    opacity=0.75
+), 1,1)
+#Compareceram
+fig_hist.append_trace(go.Histogram(
+    y=inscricoes[inscricoes['absent'] == False]['rendaFamiliar'],
+    histnorm='percent',
+    name='Compareceram',
+    xbins=dict(size=0.3),
+    marker_color='#0094FF',
+    opacity=0.75
+), 1, 2 )
+#Aprovados
+fig_hist.append_trace(go.Histogram(
+    y=inscricoesAprovados['rendaFamiliar'],
+    histnorm='percent',
+    name='Aprovados', 
+    xbins=dict(size=0.3),
+    marker_color='#FE8C00',
+    opacity=0.75
+), 2, 1)
+#Atualização aplicada a todos os subplots
+fig_hist.update_yaxes(categoryorder='array', categoryarray=["15-18","19-25","26-35","36+"])
+fig_hist.update_xaxes(showgrid=True, ticks="outside", range=[0, None], categoryorder='array', categoryarray=["15-18","19-25","26-35","36+"])
+st.plotly_chart(fig_hist)
+
 
 st.write('### Raça')
 col1, col2 = st.columns(2)

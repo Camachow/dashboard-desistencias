@@ -34,7 +34,6 @@ endpoint = f"form/{IDS['ITABIRA']}"
 req = requests.get(url+endpoint, headers=headers)
 inscricoesItabira = req.json()
 st.session_state['inscricoesItabira'] = inscricoesItabira
-print(inscricoesItabira)
 
 #Requisição Enrolled Pequi
 endpoint = f"enrolled/city/{IDS['PEQUI']}"
@@ -47,7 +46,6 @@ endpoint = f"form/{IDS['PEQUI']}"
 req = requests.get(url+endpoint, headers=headers)
 inscricoesPequi = req.json()
 st.session_state['inscricoesPequi'] = inscricoesPequi
-print(inscricoesPequi)
 
 st.title('Dados do Banco de Dados do PD')
 
