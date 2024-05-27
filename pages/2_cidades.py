@@ -150,8 +150,21 @@ st.plotly_chart(fig_hist)
 
 
 st.write('### Renda Familiar')
-fig_hist = make_subplots(rows=2, cols=2, horizontal_spacing=0.2)
 
+# Mapeamento de valores originais para novos nomes
+mapa_renda = {
+    'InferiorAUmSalarioMinimo': 'Menor que 1',
+    'De1a3SalariosMinimos': 'Entre 1 e 3',
+    'De3a10SalariosMinimos': 'Entre 3 e 10',
+    'De10a40SalariosMinimos': 'Entre 10 e 40',
+    'MaisDe40SalariosMinimos': 'Maior que 40',
+}
+
+# Aplicar o mapeamento aos dados
+inscricoes['rendaFamiliar'] = inscricoes['rendaFamiliar'].map(mapa_renda)
+inscricoesAprovados['rendaFamiliar'] = inscricoesAprovados['rendaFamiliar'].map(mapa_renda)
+
+fig_hist = make_subplots(rows=2, cols=2, horizontal_spacing=0.2)
 #Inscrições
 fig_hist.append_trace(go.Histogram( 
     y=inscricoes['rendaFamiliar'],
@@ -180,32 +193,87 @@ fig_hist.append_trace(go.Histogram(
     opacity=0.75
 ), 2, 1)
 #Atualização aplicada a todos os subplots
-fig_hist.update_yaxes(categoryorder='array', categoryarray=["15-18","19-25","26-35","36+"])
-fig_hist.update_xaxes(showgrid=True, ticks="outside", range=[0, None], categoryorder='array', categoryarray=["15-18","19-25","26-35","36+"])
+fig_hist.update_yaxes(categoryorder='array', categoryarray=["Menor que 1","Entre 1 e 3","Entre 3 e 10","Entre 10 e 40", "Maior que 40"])
+fig_hist.update_xaxes(showgrid=True, ticks="outside", range=[0, None])
 st.plotly_chart(fig_hist)
 
 
 st.write('### Raça')
-col1, col2 = st.columns(2)
-with col1:
-    fig = px.histogram(inscricoes, x='raca')
-    fig.update_layout(title='Inscrições por Raça')
-    st.plotly_chart(fig)
-with col2:
-    fig = px.histogram(inscricoesAprovados, x='raca')
-    fig.update_layout(title='Inscrições Aprovadas por Raça')
-    st.plotly_chart(fig)
+fig_hist = make_subplots(rows=2, cols=2, horizontal_spacing=0.2)
+#Inscrições
+fig_hist.append_trace(go.Histogram( 
+    y=inscricoes['raca'],
+    histnorm='percent',
+    name='Inscritos', 
+    xbins=dict(size=0.3),
+    marker_color='#E800E7',
+    opacity=0.75
+), 1,1)
+#Compareceram
+fig_hist.append_trace(go.Histogram(
+    y=inscricoes[inscricoes['absent'] == False]['raca'],
+    histnorm='percent',
+    name='Compareceram',
+    xbins=dict(size=0.3),
+    marker_color='#0094FF',
+    opacity=0.75
+), 1, 2 )
+#Aprovados
+fig_hist.append_trace(go.Histogram(
+    y=inscricoesAprovados['raca'],
+    histnorm='percent',
+    name='Aprovados', 
+    xbins=dict(size=0.3),
+    marker_color='#FE8C00',
+    opacity=0.75
+), 2, 1)
+#Atualização aplicada a todos os subplots
+fig_hist.update_yaxes(categoryorder='array', categoryarray=["Branca","Preta","Parda","Amarela"])
+fig_hist.update_xaxes(showgrid=True, ticks="outside", range=[0, None])
+st.plotly_chart(fig_hist)
 
 st.write('### Escola Pública')
-col1, col2 = st.columns(2)
-with col1:
-    fig = px.histogram(inscricoes, x='escolaPublica')
-    fig.update_layout(title='Inscrições por Escola Pública')
-    st.plotly_chart(fig)
-with col2:
-    fig = px.histogram(inscricoesAprovados, x='escolaPublica')
-    fig.update_layout(title='Inscrições Aprovadas por Escola Pública')
-    st.plotly_chart(fig)
+# Mapeamento de valores originais para novos nomes
+mapa_renda = {
+    True: 'Publica',
+    False: 'Particular'
+}
+
+# Aplicar o mapeamento aos dados
+inscricoes['escolaPublica'] = inscricoes['escolaPublica'].map(mapa_renda)
+inscricoesAprovados['escolaPublica'] = inscricoesAprovados['escolaPublica'].map(mapa_renda)
+fig_hist = make_subplots(rows=2, cols=2, horizontal_spacing=0.2)
+#Inscrições
+fig_hist.append_trace(go.Histogram( 
+    y=inscricoes['escolaPublica'],
+    histnorm='percent',
+    name='Inscritos', 
+    xbins=dict(size=0.3),
+    marker_color='#E800E7',
+    opacity=0.75
+), 1,1)
+#Compareceram
+fig_hist.append_trace(go.Histogram(
+    y=inscricoes[inscricoes['absent'] == False]['escolaPublica'],
+    histnorm='percent',
+    name='Compareceram',
+    xbins=dict(size=0.3),
+    marker_color='#0094FF',
+    opacity=0.75
+), 1, 2 )
+#Aprovados
+fig_hist.append_trace(go.Histogram(
+    y=inscricoesAprovados['escolaPublica'],
+    histnorm='percent',
+    name='Aprovados', 
+    xbins=dict(size=0.3),
+    marker_color='#FE8C00',
+    opacity=0.75
+), 2, 1)
+#Atualização aplicada a todos os subplots
+fig_hist.update_yaxes(categoryorder='array')
+fig_hist.update_xaxes(showgrid=True, ticks="outside", range=[0, None])
+st.plotly_chart(fig_hist)
 
 st.write('## Tabelas')
 st.write('### Inscritos')
