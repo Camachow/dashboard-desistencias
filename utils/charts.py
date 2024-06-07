@@ -3,7 +3,7 @@ import plotly.graph_objects as go
 import streamlit as st
 
 
-def histograma(yInscritos, yCompareceram, yAprovados, categoryarray):
+def histograma(yInscritos, yCompareceram, yAprovados, yEvasao, categoryarray):
     fig_hist = make_subplots(rows=2, cols=2, horizontal_spacing=0.2)
     #Inscrições
     fig_hist.append_trace(go.Histogram( 
@@ -29,9 +29,18 @@ def histograma(yInscritos, yCompareceram, yAprovados, categoryarray):
         histnorm='percent',
         name='Aprovados', 
         xbins=dict(size=0.3),
-        marker_color='#FE8C00',
+        marker_color='#8C44FF',
         opacity=0.75
     ), 2, 1)
+    #Evasão
+    fig_hist.append_trace(go.Histogram(
+        y = yEvasao,
+        histnorm='percent',
+        name='Evasão', 
+        xbins=dict(size=0.3),
+        marker_color='#FE8C00',
+        opacity=0.75
+    ), 2, 2)
     #Atualização aplicada a todos os subplots
     fig_hist.update_yaxes(categoryorder='array', categoryarray = categoryarray)
     fig_hist.update_xaxes(showgrid=True, ticks="outside", range=[0, None])
